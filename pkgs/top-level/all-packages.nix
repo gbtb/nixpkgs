@@ -366,6 +366,8 @@ with pkgs;
 
   dsq = callPackage ../tools/misc/dsq { buildGoModule = buildGo118Module; };
 
+  dottrace = callPackage ../development/tools/dottrace { };
+
   each = callPackage ../tools/text/each { };
 
   eclipse-mat = callPackage ../development/tools/eclipse-mat { };
