@@ -51,15 +51,46 @@ let
 
     executables = [ ];
   };
+  tests = buildDotnetModule {
+    inherit version src dotnet-sdk;
+    pname = "netcoredbg-test-suite";
+
+    patches = [ ./test-suite.patch ];
+    projectFile = "test-suite/test-suite.sln";
+    nugetDeps = ./test-deps.nix;
+
+    dotnetBuildFlags = [ "-c Debug" ];
+    dotnetInstallFlags = [ "-c Debug" ];
+    #executables = [ Test ];
+    installPhase = ''
+      cp -r test-suite/ $out
+    '';
+    fixupPhase = ''
+      patchShebangs $out/run_tests.sh
+      wrapDotnetProgram $out/TestRunner/bin/Debug/netcoreapp3.1/TestRunner $out/TestRunner/bin/Debug/netcoreapp3.1/TestRunner
+    '';
+    #postInstall = ''
+    #  cp -r test-suite/run_tests.sh $out
+    #'';
+  };
 in
 stdenvNoCC.mkDerivation {
-  inherit pname version;
+  inherit pname version src;
 
-  buildCommand = ''
+  nativeBuildInputs = [ dotnet-sdk ];
+
+  buildPhase = ''
     mkdir -p $out/share/netcoredbg $out/bin
     cp ${unmanaged}/* $out/share/netcoredbg
     cp ${managed}/lib/netcoredbg/* $out/share/netcoredbg
     ln -s $out/share/netcoredbg/netcoredbg $out/bin/netcoredbg
+  '';
+
+  doCheck = true;
+
+  checkPhase =''
+    cd ${tests}
+    ./run_tests.sh
   '';
 
   meta = with lib; {
