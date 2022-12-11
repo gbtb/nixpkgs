@@ -22,6 +22,7 @@
 , doCheck ? false
   # Flags to pass to `makeWrapper`. This is done to avoid double wrapping.
 , makeWrapperArgs ? [ ]
+, isDotnetTool ? false
 
   # Flags to pass to `dotnet restore`.
 , dotnetRestoreFlags ? [ ]
@@ -145,6 +146,7 @@ stdenvNoCC.mkDerivation (args // {
   makeWrapperArgs = args.makeWrapperArgs or [ ] ++ [
     "--prefix LD_LIBRARY_PATH : ${dotnet-sdk.icu}/lib"
   ];
+  isDotnetTool = args.isDotnetTool;
 
   # Stripping breaks the executable
   dontStrip = args.dontStrip or true;

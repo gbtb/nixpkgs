@@ -8,9 +8,14 @@ wrapDotnetProgram() {
         local -r dotnetRootFlag=("--set" "DOTNET_ROOT" "@dotnetRuntime@")
     fi
 
+    if [ "${isDotnetTool-}" ]; then
+        local -r dotnetCliHomeFlag=("--set" "DOTNET_CLI_HOME" "$out/lib/$pname")
+    fi
+
     makeWrapper "$1" "$2" \
         --suffix "LD_LIBRARY_PATH" : "@runtimeDeps@" \
         "${dotnetRootFlag[@]}" \
+        "${dotnetCliHomeFlag[@]}" \
         "${gappsWrapperArgs[@]}" \
         "${makeWrapperArgs[@]}"
 
@@ -25,7 +30,7 @@ dotnetFixupHook() {
             path="$out/lib/$pname/$executable"
 
             if test -x "$path"; then
-                wrapDotnetProgram "$path" "$out/bin/$(basename "$executable")"
+                wrapDotnetProgram "dotnet fsautocomplete" "$out/bin/$(basename "$executable")"
             else
                 echo "Specified binary \"$executable\" is either not an executable or does not exist!"
                 echo "Looked in $path"
