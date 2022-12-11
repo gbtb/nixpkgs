@@ -58,7 +58,7 @@ in
       name = "dotnet-fixup-hook";
       deps = [ dotnet-runtime ];
       substitutions = {
-        dotnetRuntime = dotnet-runtime;
+        dotnetRuntime = dotnet-sdk;
         runtimeDeps = libraryPath;
       };
     } ./dotnet-fixup-hook.sh) { };

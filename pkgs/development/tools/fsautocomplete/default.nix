@@ -1,4 +1,4 @@
-{ buildDotnetModule, fsautocomplete, mkNugetDeps }:
+{ buildDotnetModule, fsautocomplete, mkNugetDeps, dotnet-sdk }:
 let
 in
 buildDotnetModule rec {
@@ -35,6 +35,9 @@ cat <<EOF > "./NuGet.config"
 </configuration>
 EOF
     export DOTNET_CLI_HOME=$out/lib/${pname}
-    dotnet tool install --configfile ./NuGet.config --global fsautocomplete --version ${version} 
+    dotnet tool install --configfile ./NuGet.config --global fsautocomplete 
+    export PATH=$PATH:$out/lib/${pname}/.dotnet/tools
+    export DOTNET_ROOT=${dotnet-sdk}
+    fsautocomplete --version
   '';
 }
