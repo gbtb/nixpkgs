@@ -9,6 +9,7 @@
 , dotnet-runtime
 , runtimeDeps
 , buildType
+, isDotnetTool
 }:
 
 let
@@ -54,11 +55,12 @@ in
     } ./dotnet-install-hook.sh) { };
 
   dotnetFixupHook = callPackage ({ }:
+    let dep = if isDotnetTool then dotnet-sdk else dotnet-runtime; in
     makeSetupHook {
       name = "dotnet-fixup-hook";
-      deps = [ dotnet-runtime ];
+      deps = [ dep ];
       substitutions = {
-        dotnetRuntime = dotnet-sdk;
+        dotnetRuntime = dep;
         runtimeDeps = libraryPath;
       };
     } ./dotnet-fixup-hook.sh) { };

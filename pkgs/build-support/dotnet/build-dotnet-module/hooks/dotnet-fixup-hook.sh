@@ -8,9 +8,9 @@ wrapDotnetProgram() {
         local -r dotnetRootFlag=("--set" "DOTNET_ROOT" "@dotnetRuntime@")
     fi
 
-    if [ "${isDotnetTool-}" ]; then
-        local -r dotnetCliHomeFlag=("--set" "DOTNET_CLI_HOME" "$out/lib/$pname")
-    fi
+    #if [ "${isDotnetTool-}" ]; then
+    #    local -r dotnetCliHomeFlag=("--set" "DOTNET_CLI_HOME" "$out/lib/$pname")
+    #fi
 
     makeWrapper "$1" "$2" \
         --suffix "LD_LIBRARY_PATH" : "@runtimeDeps@" \
