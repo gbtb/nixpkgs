@@ -668,8 +668,6 @@ with pkgs;
   nuget-to-nix = callPackage ../build-support/dotnet/nuget-to-nix { };
   mkNugetSource = callPackage ../build-support/dotnet/make-nuget-source { };
   mkNugetDeps = callPackage ../build-support/dotnet/make-nuget-deps { };
-  fsautocomplete = callPackage ../development/tools/fsautocomplete { };
-  #installDotnetTool = callPackage ../build-support/dotnet/install-dotnet-tool { };
 
   dotnetenv = callPackage ../build-support/dotnet/dotnetenv {
     dotnetfx = dotnetfx40;
@@ -37989,6 +37987,8 @@ with pkgs;
     nanoizeNewlib = true;
     stdenv = crossLibcStdenv;
   };
+
+  fsautocomplete = callPackage ../development/tools/fsautocomplete { };
 
   omnisharp-roslyn = callPackage ../development/tools/omnisharp-roslyn { };
 
